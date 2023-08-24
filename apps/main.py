@@ -5,6 +5,8 @@ import yfinance
 import pandas as ps
 from os.path import join
 from pathlib import Path
+import sqlalchemy
+import psycopg2
 
 class extracao_finance():
     def __init__(self,path,start_date,end_date,ticker = "AAPL"):
@@ -43,20 +45,15 @@ class extracao_finance():
         dados = dados.withColumn("Date", f.split(f.col('Date'),' ')[0])
 
         self.dados = dados
-    
+        dados.show()
     def execute (self):
 
         self.criando_pasta()
         self.extraindo_dados()
         dados_pandas = self.dados.toPandas()
 
-        postgres_conn = "jdbc:postgresql://172.28.0.2:5432/T_Apple"
-        postgres_values = {
-            "user" : "postgres",
-            "password" : "Postgres!",
-            "driver" : "org.postgresql.Driver"
-        }
-        dados_pandas.to_sql("T_Apple", postgres_conn,  properties=postgres_values, index=False, if_exists="append")
+        postgres_conn = sqlalchemy.create_engine("postgresql://postgres:Postgres!@172.28.0.2:5432/T_Apple")
+        dados_pandas.to_sql("T_Apple", con = postgres_conn, index=False, if_exists="append", schema="public")
 
 if __name__ == "__main__":
     start_date= (datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')

@@ -3,7 +3,6 @@ FROM openjdk:11.0.11-jre-slim-buster as builder
 
 RUN apt-get update && apt-get install -y curl vim wget software-properties-common ssh net-tools ca-certificates python3 python3-pip python3-numpy python3-matplotlib python3-scipy python3-pandas python3-simpy
 
-
 RUN update-alternatives --install "/usr/bin/python" "python" "$(which python3)" 1
 
 ENV SPARK_VERSION=3.3.2 HADOOP_VERSION=3 SPARK_HOME=/opt/spark PYTHONHASHSEED=1
@@ -18,6 +17,9 @@ FROM builder as apache-spark
 RUN pip3 install pyspark
 RUN pip3 install yfinance
 RUN pip3 install pandas
+RUN pip3 install SQLAlchemy
+RUN apt-get update && apt-get install -y postgresql-server-dev-all
+RUN pip3 install psycopg2-binary
 
 WORKDIR /opt/spark
 
@@ -42,4 +44,4 @@ ln -sf /dev/stdout $SPARK_WORKER_LOG
 
 COPY start-spark.sh /opt/spark/scripts/
 
-CMD ["/bin/bash", "/start-spark.sh"]
+CMD ["/bin/bash", "start-spark.sh"]
