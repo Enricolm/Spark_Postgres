@@ -52,8 +52,8 @@ class extracao_finance():
         self.extraindo_dados()
         dados_pandas = self.dados.toPandas()
 
-        postgres_conn = sqlalchemy.create_engine("postgresql://postgres:Postgres!@172.28.0.2:5432/T_Apple")
-        dados_pandas.to_sql("T_Apple", con = postgres_conn, index=False, if_exists="append", schema="public")
+        postgres_conn = sqlalchemy.create_engine("postgresql://postgres:Postgres!@172.18.0.2:5432/T_Apple").connect()
+        dados_pandas.to_sql("T_Apple", con = postgres_conn, index=False, if_exists="append")
 
 if __name__ == "__main__":
     start_date= (datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')

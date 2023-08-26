@@ -17,7 +17,7 @@ FROM builder as apache-spark
 RUN pip3 install pyspark
 RUN pip3 install yfinance
 RUN pip3 install pandas
-RUN pip3 install SQLAlchemy
+RUN pip3 install sqlalchemy==1.4.46
 RUN apt-get update && apt-get install -y postgresql-server-dev-all
 RUN pip3 install psycopg2-binary
 
