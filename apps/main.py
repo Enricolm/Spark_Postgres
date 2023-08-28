@@ -52,12 +52,12 @@ class extracao_finance():
         self.extraindo_dados()
         dados_pandas = self.dados.toPandas()
 
-        postgres_conn = sqlalchemy.create_engine("postgresql://postgres:Postgres!@172.18.0.2:5432/T_Apple").connect()
+        postgres_conn = sqlalchemy.create_engine("postgresql://user1:postgres@spark_yfinance-db-1:5432/t_apple").connect()
         dados_pandas.to_sql("T_Apple", con = postgres_conn, index=False, if_exists="append")
 
 if __name__ == "__main__":
-    start_date= (datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')
-    end_date= (datetime.now()).strftime('%Y-%m-%d')
+    start_date= (datetime.now() - timedelta(days=240)).strftime('%Y-%m-%d')
+    end_date= (datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')
     Base_folder = join(Path('../'),
                     ('data/Data={date}'))
     extracao = extracao_finance(path=Base_folder.format(date=f'2023-08-08'), start_date=start_date, end_date=end_date)

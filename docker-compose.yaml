@@ -1,15 +1,24 @@
 version: "3.8"
 services:
 
-  postgres:
+  db:
     image: postgres
-    environment:
-      POSTGRES_PASSWORD: "Postgres!"
-      POSTGRES_DB: "T_Apple"
     ports:
       - "5432:5432"
-    volumes:
-      - pg-data:/var/lib/postgresql/data
+    restart: always
+    environment:
+      POSTGRES_USER: user1
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: t_apple
+
+
+  admin:
+    image: adminer
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - 8084:8080
 
   spark-master:
     image: apache-spark-image:3.3.2
