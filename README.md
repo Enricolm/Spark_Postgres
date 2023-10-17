@@ -13,3 +13,6 @@
    
   * spark-worker-N: aqui vc pode definir a quantidade de workers que desejar, basta copiar o conteiner do yaml e apenas trocar seu nome.
     * image: apache-spark-image:3.3.2
+
+### Clone Project
+     $ git clone https://github.com/Enricolm/Spark_Postgres.git
